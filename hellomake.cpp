@@ -252,19 +252,42 @@ void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, i
     combinationUtil(InputArray, InputArr_Size, InputArrayIndex+1, CurrentCombinationBuffer, CombinationSize, CombinationBufferIndex);
 }
 
-#define StackIsNotFilled (*CombinationBufferIndex < CombinationSize)
+#define StackIsNotFull (*CombinationBufferIndex < CombinationSize)
+#define StackIsFull (CombinationSize == *CombinationBufferIndex)
+#define InitializeTheStack (-1 == *StartElementsArrayIndex)
+#define ArrayIndexCanBeIncreased (ElementsArraySize > *ElementsArrayIndex)
+#define ArrayIndexIsLast (ElementsArraySize == *ElementsArrayIndex)
+#define StartCanBeIncreased ((ElementsArraySize - *StartElementsArrayIndex + 1) > CombinationSize)
 bool FindTheCombination (int* StartElementsArrayIndex,int* ElementsArrayIndex,int CurrentCombinationBuffer[], int* CombinationBufferIndex)
 {
 
-    if ((ElementsArrayIndex - StartElementsArrayIndex + 1) == CombinationSize)
+    if ((ElementsArraySize - *StartElementsArrayIndex + 1) == CombinationSize)
     {
         return false;
     }
     else
     {
-        while (StackIsNotFilled) 
+        while (StackIsNotFull) 
         {
-            if(CombinationSize == *CombinationBufferIndex)
+            if (InitializeTheStack)
+            {
+                *ElementsArrayIndex = 0;
+                *StartElementsArrayIndex = 0;
+                *CombinationBufferIndex = 0;
+                CurrentCombinationBuffer[*CombinationBufferIndex] = ElementsArray[*ElementsArrayIndex];
+            }
+            else if (StackIsNotFull)
+            {
+                *CombinationBufferIndex = *CombinationBufferIndex + 1;
+                CurrentCombinationBuffer[*CombinationBufferIndex] = ElementsArray[*ElementsArrayIndex];
+            }
+            else if (StackIsFull && ArrayIndexCanBeIncreased)
+            {
+                *ElementsArrayIndex = *ElementsArrayIndex + 1;
+                CurrentCombinationBuffer[*CombinationBufferIndex] = ElementsArray[*ElementsArrayIndex];
+
+            }
+            if (StackIsFull && ArrayIndexIsLast && StartCanBeIncreased)
             {
                 
 
