@@ -120,8 +120,8 @@ int Real_Data[RealData_Elements_Size] = {
 2754U, /* Index 55*/
 };  
 uint32_t NumberOfAllCombinations = 0;
-const int ElementsArraySize = 20;
-const int CombinationSize = 5;
+const int ElementsArraySize = 5;
+const int CombinationSize = 3;
 int ElementsArray[ElementsArraySize] = {0};
 
 
@@ -214,11 +214,11 @@ void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, i
     // Current combination is ready
     if (CombinationBufferIndex == CombinationSize)
     {
-        // for (int j=0; j<CombinationSize; j++)
-        // {
-        //     printf("%d ",CurrentCombinationBuffer[j]);
-        // }
-        // printf(" => %d\n",Real_Data_Array_Sum(CurrentCombinationBuffer, CombinationSize));
+        for (int j=0; j<CombinationSize; j++)
+        {
+            printf("%d ",CurrentCombinationBuffer[j]);
+        }
+        printf(" => %d\n",Real_Data_Array_Sum(CurrentCombinationBuffer, CombinationSize));
         Sum = Real_Data_Array_Sum(CurrentCombinationBuffer, CombinationSize);
         //AllCombinations.push_back(new m_Combination_Sum_Index(0,0));
         Sum_Index = Find_In_Array(SumArray,SumArrayMaxIndex,Sum);
@@ -247,18 +247,34 @@ void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, i
     CurrentCombinationBuffer[CombinationBufferIndex] = InputArray[InputArrayIndex];
     combinationUtil(InputArray, InputArr_Size, InputArrayIndex+1, CurrentCombinationBuffer, CombinationSize, CombinationBufferIndex+1);
  
-    // Remove duplicates
-    while (InputArray[InputArrayIndex] == InputArray[InputArrayIndex+1])
-        InputArrayIndex++;
- 
     // current is excluded, replace it with next (Note that
     // i+1 is passed, but index is not changed)
     combinationUtil(InputArray, InputArr_Size, InputArrayIndex+1, CurrentCombinationBuffer, CombinationSize, CombinationBufferIndex);
 }
 
-void FindTheCombination (int* ElementsArrayIndex, int CurrentCombinationBuffer[],int* CombinationBufferIndex)
+#define StackIsNotFilled (*CombinationBufferIndex < CombinationSize)
+bool FindTheCombination (int* StartElementsArrayIndex,int* ElementsArrayIndex,int CurrentCombinationBuffer[], int* CombinationBufferIndex)
 {
 
+    if ((ElementsArrayIndex - StartElementsArrayIndex + 1) == CombinationSize)
+    {
+        return false;
+    }
+    else
+    {
+        while (StackIsNotFilled) 
+        {
+            if(CombinationSize == *CombinationBufferIndex)
+            {
+                
+
+
+            }
+
+            CurrentCombinationBuffer[*CombinationBufferIndex] = ElementsArray[*ElementsArrayIndex];
+        }
+        return true;
+    }
 }
 
 
