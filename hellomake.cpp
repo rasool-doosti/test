@@ -119,10 +119,10 @@ int Real_Data[RealData_Elements_Size] = {
 2644U, /* Index 54*/
 2754U, /* Index 55*/
 };  
-uint32_t Combination_Index = 0;
-const int Elements_Size = 20;
+uint32_t NumberOfAllCombinations = 0;
+const int ElementsArraySize = 20;
 const int CombinationSize = 5;
-int Elements[Elements_Size] = {0};
+int ElementsArray[ElementsArraySize] = {0};
 
 
 
@@ -152,7 +152,7 @@ public:
 m_Combination_Sum_Index SumArray[100000];
 int SumArrayMaxIndex = 0;
 
-void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, int Current_Combination_Buffer[], int CombinationSize, int Combination_Buffer_Index); 
+void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, int CurrentCombinationBuffer[], int CombinationSize, int CombinationBufferIndex); 
 // vector<m_Combination_Sum_Index*> AllCombinations;
 
 int Real_Data_Array_Sum(int arr[],int Len)
@@ -188,38 +188,38 @@ int compare_SumArray (const void * a, const void * b)
 }
 
 // The main function that prints all combinations of size Combination_Size
-// in Elements[] of size Elements_Size. This function mainly uses combinationUtil()
-void printCombination(int Elements[], int Elements_Size, int Combination_Size)
+// in ElementsArray[] of size ElementsArraySize. This function mainly uses combinationUtil()
+void printCombination(int ElementsArray[], int ElementsArraySize, int Combination_Size)
 {
     // A temporary array to store all combination one by one
-    int Current_Combination_Buffer[Combination_Size];
+    int CurrentCombinationBuffer[Combination_Size];
  
     // Sort array to handle duplicates
-    // qsort (Elements, Elements_Size, sizeof(int), compare);
+    // qsort (ElementsArray, ElementsArraySize, sizeof(int), compare);
  
     // Print all combination using temprary array 'data[]'
-    combinationUtil(Elements, Elements_Size, 0, Current_Combination_Buffer, Combination_Size, 0);
+    combinationUtil(ElementsArray, ElementsArraySize, 0, CurrentCombinationBuffer, Combination_Size, 0);
 }
  
 /* InputArray[] --------------> Input Array
    InputArr_Size ------> Size of input array
    CombinationSize ----> Size of a combination to be printed
-   Combination_Buffer_Index  ---------> Current index in Current_Combination_Buffer[]
-   Current_Combination_Buffer[] -------------> Temporary array to store current combination
+   CombinationBufferIndex  ---------> Current index in CurrentCombinationBuffer[]
+   CurrentCombinationBuffer[] -------------> Temporary array to store current combination
    InputArrayIndex  ---> index of current element in InputArray[]     */
-void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, int Current_Combination_Buffer[], int CombinationSize, int Combination_Buffer_Index)
+void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, int CurrentCombinationBuffer[], int CombinationSize, int CombinationBufferIndex)
 {
     int Sum = 0;
     int Sum_Index = -1;
     // Current combination is ready
-    if (Combination_Buffer_Index == CombinationSize)
+    if (CombinationBufferIndex == CombinationSize)
     {
         // for (int j=0; j<CombinationSize; j++)
         // {
-        //     printf("%d ",Current_Combination_Buffer[j]);
+        //     printf("%d ",CurrentCombinationBuffer[j]);
         // }
-        // printf(" => %d\n",Real_Data_Array_Sum(Current_Combination_Buffer, CombinationSize));
-        Sum = Real_Data_Array_Sum(Current_Combination_Buffer, CombinationSize);
+        // printf(" => %d\n",Real_Data_Array_Sum(CurrentCombinationBuffer, CombinationSize));
+        Sum = Real_Data_Array_Sum(CurrentCombinationBuffer, CombinationSize);
         //AllCombinations.push_back(new m_Combination_Sum_Index(0,0));
         Sum_Index = Find_In_Array(SumArray,SumArrayMaxIndex,Sum);
 
@@ -235,7 +235,7 @@ void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, i
             SumArray[Sum_Index].CombinationIndex++;
         }
 
-        Combination_Index++;
+        NumberOfAllCombinations++;
         return;
     }
  
@@ -244,8 +244,8 @@ void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, i
         return;
  
     // current is included, put next at next location
-    Current_Combination_Buffer[Combination_Buffer_Index] = InputArray[InputArrayIndex];
-    combinationUtil(InputArray, InputArr_Size, InputArrayIndex+1, Current_Combination_Buffer, CombinationSize, Combination_Buffer_Index+1);
+    CurrentCombinationBuffer[CombinationBufferIndex] = InputArray[InputArrayIndex];
+    combinationUtil(InputArray, InputArr_Size, InputArrayIndex+1, CurrentCombinationBuffer, CombinationSize, CombinationBufferIndex+1);
  
     // Remove duplicates
     while (InputArray[InputArrayIndex] == InputArray[InputArrayIndex+1])
@@ -253,17 +253,25 @@ void combinationUtil(int InputArray[], int InputArr_Size, int InputArrayIndex, i
  
     // current is excluded, replace it with next (Note that
     // i+1 is passed, but index is not changed)
-    combinationUtil(InputArray, InputArr_Size, InputArrayIndex+1, Current_Combination_Buffer, CombinationSize, Combination_Buffer_Index);
+    combinationUtil(InputArray, InputArr_Size, InputArrayIndex+1, CurrentCombinationBuffer, CombinationSize, CombinationBufferIndex);
 }
+
+void FindTheCombination (int* ElementsArrayIndex, int CurrentCombinationBuffer[],int* CombinationBufferIndex)
+{
+
+}
+
+
+
 // Driver program to test above functions
 int main()
 {
-    for(int i = 0; i < Elements_Size; i++)
-        Elements[i] = i;
+    for(int i = 0; i < ElementsArraySize; i++)
+        ElementsArray[i] = i;
 
-    printCombination(Elements, Elements_Size, CombinationSize);
+    printCombination(ElementsArray, ElementsArraySize, CombinationSize);
 
-    printf("Number of combinations = %d\n",Combination_Index);
+    printf("Number of combinations = %d\n",NumberOfAllCombinations);
     printf("Sorting the List\n");
 
     qsort (SumArray, SumArrayMaxIndex, sizeof(SumArray[0]), compare_SumArray);
